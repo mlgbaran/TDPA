@@ -5,6 +5,8 @@ using UnityEngine;
 public class NPCController : MonoBehaviour
 {
     // Start is called before the first frame update
+    public bool isFemale;
+
     public bool isEquipped;
 
     public NPCRotation npcRotation;
@@ -17,6 +19,15 @@ public class NPCController : MonoBehaviour
 
     public Shooting shooting;
     // Start is called before the first frame update
+
+    void Awake()
+    {
+
+        animator.SetBool("isFemale", isFemale);
+
+    }
+
+
     void Start()
     {
 
