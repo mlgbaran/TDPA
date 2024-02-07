@@ -27,14 +27,8 @@ public class NPCTalk : MonoBehaviour
             // Set the "talkDice" parameter in the animator
             animator.SetFloat("talkDice", randomTalkNumber);
 
-            // Set the "isTalking" boolean parameter to true
-            //animator.SetBool("isTalking", true);
-
             // Wait for the current animation to finish
             yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
-
-            // Set the "isTalking" boolean parameter to false
-            //animator.SetBool("isTalking", false);
 
             // Wait for a short delay before rolling the dice for the next animation
             yield return new WaitForSeconds(animationCooldown); // Adjust this delay as needed
