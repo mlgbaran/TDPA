@@ -14,7 +14,7 @@ public class Crosshair : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(cam.ScreenToWorldPoint(Input.mousePosition).x);
+
 
         transform.position = new Vector2(cam.ScreenToWorldPoint(Input.mousePosition).x, cam.ScreenToWorldPoint(Input.mousePosition).y);
         //  transform.position.z = 2;
