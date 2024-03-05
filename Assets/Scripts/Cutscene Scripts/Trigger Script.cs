@@ -47,11 +47,33 @@ public class TriggerScript : MonoBehaviour
     void RingPhone()
     {
 
+        playerAnimator.SetBool("isInCutscene", true);
+
+
+
+        playerAnimator.SetFloat("DirectionX", 0f);
+
+        playerAnimator.SetFloat("DirectionY", 0f);
+
+        playerAnimator.SetFloat("Speed", 0f);
+
+        playerAnimator.SetFloat("Horizontal", 0f);
+
+        playerAnimator.SetFloat("Vertical", 0f);
+
+        playerAnimator.SetBool("isLooking", false);
+
+        playerAnimator.Play("Map_Idle");
+
+
+
         phoneAnimator.SetBool("isRinging", true);
 
         player.GetComponent<PlayerMovement>().enabled = false;
 
         player.GetComponent<PlayerRotation>().enabled = false;
+
+
 
         StartCoroutine(StopRinging(4f)); //2.5 seconds 
 
