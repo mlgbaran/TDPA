@@ -69,9 +69,11 @@ public class TriggerScript : MonoBehaviour
         // Step 4: Play Text_PutDown
         playerAnimator.SetTrigger("puttingDownPhone");
 
-        yield return new WaitForSeconds(0.7f);
-
         playerAnimator.Play("Text Put Down");
+
+        yield return new WaitForSeconds(1f);
+
+
 
         // Optionally, reset or transition to another state
         phoneAnimator.SetBool("isOut", false);
