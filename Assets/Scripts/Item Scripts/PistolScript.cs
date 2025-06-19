@@ -60,7 +60,7 @@ public class PistolScript : MonoBehaviour
 
         if (isPlayer) //if the player is running this script
         {
-            if (playerRotation.lookPosition == null)
+            if (playerRotation.lookDirection == null)
             {
                 toMouse = true;
             }
@@ -146,7 +146,7 @@ public class PistolScript : MonoBehaviour
             }
             else
             {
-                FaceTowards(playerRotation.lookPosition.transform.position);
+                FaceTowards(playerRotation.lookDirection.transform.position);
             }
 
         }
@@ -216,7 +216,7 @@ public class PistolScript : MonoBehaviour
             }
             else
             {
-                FaceTowards(npcRotation.lookPosition.transform.position);
+                FaceTowards(npcRotation.lookDirection.transform.position);
             }
         }
     }

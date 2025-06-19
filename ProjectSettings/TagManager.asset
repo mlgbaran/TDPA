@@ -15,8 +15,8 @@ TagManager:
   - PostProcessing
   - Player
   - Enemy
-  - 
-  - 
+  - Interactable
+  - RainParticles
   - 
   - 
   - 
@@ -40,6 +40,12 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 2867373581
+    locked: 0
+  - name: Windows
+    uniqueID: 3570745299
+    locked: 0
+  - name: Rain
+    uniqueID: 2374776399
     locked: 0
   - name: Default
     uniqueID: 0

@@ -115,46 +115,46 @@ public class CharacterSpriteImporterEditor : EditorWindow
         return;
 
 
-        int frameWidth = 32;
-        int frameHeight = 32;
-
-
-        string clipname = "";
-        // Adjust frame rate as needed
-
-        string path = AssetDatabase.GetAssetPath(spriteSheet);
-        Object[] sprites = AssetDatabase.LoadAllAssetsAtPath(path);
-
-        for (int i = 0; i < sprites.Length; i++)
-        {
-            if (sprites[i].GetType() == typeof(Sprite) && !sprites[i].name.Contains("Temp"))
-            {
-
-                if (i == 0 || clipname != RemoveNumericValuesAndLastCharacter(sprites[i].name))  //if the current clip has ended OR it's the first sprite
-                {
-                    AnimationClip newclip = new AnimationClip();
-                    newclip.frameRate = 12f;
-
-                    clipname = RemoveNumericValuesAndLastCharacter(sprites[i].name);
-
-                    newclip.name = clipname;
-
-                    EditorCurveBinding curveBinding = new EditorCurveBinding();
-                    curveBinding.type = typeof(SpriteRenderer);
-                    curveBinding.path = "";
-                    curveBinding.propertyName = "m_Sprite";
-
-                    //clip = new clip
-
-                }
-
-                //clip = clip + animation
-
-                Debug.Log(sprites[i].name);
-
-
-            }
-        }
+        // int frameWidth = 32;
+        // int frameHeight = 32;
+        //
+        //
+        // string clipname = "";
+        // // Adjust frame rate as needed
+        //
+        // string path = AssetDatabase.GetAssetPath(spriteSheet);
+        // Object[] sprites = AssetDatabase.LoadAllAssetsAtPath(path);
+        //
+        // for (int i = 0; i < sprites.Length; i++)
+        // {
+        //     if (sprites[i].GetType() == typeof(Sprite) && !sprites[i].name.Contains("Temp"))
+        //     {
+        //
+        //         if (i == 0 || clipname != RemoveNumericValuesAndLastCharacter(sprites[i].name))  //if the current clip has ended OR it's the first sprite
+        //         {
+        //             AnimationClip newclip = new AnimationClip();
+        //             newclip.frameRate = 12f;
+        //
+        //             clipname = RemoveNumericValuesAndLastCharacter(sprites[i].name);
+        //
+        //             newclip.name = clipname;
+        //
+        //             EditorCurveBinding curveBinding = new EditorCurveBinding();
+        //             curveBinding.type = typeof(SpriteRenderer);
+        //             curveBinding.path = "";
+        //             curveBinding.propertyName = "m_Sprite";
+        //
+        //             //clip = new clip
+        //
+        //         }
+        //
+        //         //clip = clip + animation
+        //
+        //         Debug.Log(sprites[i].name);
+        //
+        //
+        //     }
+        // }
 
 
 
@@ -214,7 +214,7 @@ public class CharacterSpriteImporterEditor : EditorWindow
                 spriteRenderer.sprite = slicedTile;
 
                 NPCRotation npcRotation = prefabObject.AddComponent<NPCRotation>();
-                npcRotation.lookPosition = LookDirectionPrefab;
+                npcRotation.lookDirection = LookDirectionPrefab;
 
                 BoxCollider2D boxCollider2D = prefabObject.AddComponent<BoxCollider2D>();
                 boxCollider2D.isTrigger = false;
@@ -230,20 +230,20 @@ public class CharacterSpriteImporterEditor : EditorWindow
 
                 //adding components end
 
-                string savepath = "Assets/Prefabs/Character Prefabs/" + characterName;
-
-                // Check if the desired folder exists, if not: create it
-                if (!AssetDatabase.IsValidFolder(savepath))
-                {
-                    AssetDatabase.CreateFolder("Assets/Prefabs/Character Prefabs", characterName);
-                    Debug.Log("Folder created: " + savepath);
-                }
-
-                // Create and save the prefab.
-                PrefabUtility.SaveAsPrefabAsset(prefabObject, "Assets/Prefabs/Character Prefabs/" + characterName + "/" + characterName + ".prefab");
-                DestroyImmediate(prefabObject); // Destroy the temporary GameObject.
-
-                Debug.Log("Prefab with sliced tile '" + characterName + "' created.");
+                //string savepath = "Assets/Prefabs/Character Prefabs/" + characterName;
+                //
+                //// Check if the desired folder exists, if not: create it
+                //if (!AssetDatabase.IsValidFolder(savepath))
+                //{
+                //    AssetDatabase.CreateFolder("Assets/Prefabs/Character Prefabs", characterName);
+                //    Debug.Log("Folder created: " + savepath);
+                //}
+                //
+                //// Create and save the prefab.
+                //PrefabUtility.SaveAsPrefabAsset(prefabObject, "Assets/Prefabs/Character Prefabs/" + characterName + "/" + characterName + ".prefab");
+                //DestroyImmediate(prefabObject); // Destroy the temporary GameObject.
+                //
+                //Debug.Log("Prefab with sliced tile '" + characterName + "' created.");
             }
             else
             {

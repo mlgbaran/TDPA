@@ -38,18 +38,7 @@ public class NPCController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))  //npc equip a weapon
-        {
-
-            if (isEquipped)
-            {
-                LeaveWeapon();
-            }
-            else
-            {
-                EquipWeapon();
-            }
-        }
+        //npc equips a weapon or sth
     }
 
     void NPCEquipWeaponTrigger()

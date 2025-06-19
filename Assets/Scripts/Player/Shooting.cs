@@ -167,7 +167,7 @@ public class Shooting : MonoBehaviour
 
             if (hitInfo)
             {
-                Debug.Log(hitInfo.transform.name);
+                //Debug.Log(hitInfo.transform.name);
 
                 if (hitInfo.transform.gameObject.layer == enemyLayerMask)
                 {

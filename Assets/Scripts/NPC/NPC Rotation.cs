@@ -20,7 +20,9 @@ public class NPCRotation : MonoBehaviour
 
     public Animator animator;
     public bool isEquipped;
-    public GameObject lookPosition = null;
+
+    public bool lookAtLookDirection;
+    public GameObject lookDirection;
 
     UnityEngine.Vector3 ustsag;
     UnityEngine.Vector3 sagust;
@@ -42,6 +44,8 @@ public class NPCRotation : MonoBehaviour
 
     //Big problem
     public ShoulderScript shoulderScript;
+
+
 
     void Awake()
     {
@@ -75,7 +79,7 @@ public class NPCRotation : MonoBehaviour
 
             tanbig = Mathf.Tan((90f - smallDegree) * Mathf.Deg2Rad);
 
-            LookAt(lookPosition.transform.position);
+            LookAt(lookDirection.transform.position);
 
         }
 
@@ -152,9 +156,9 @@ public class NPCRotation : MonoBehaviour
         {
             if (shoulderScript != null && isEquipped)
             {
-                shoulderScript.SetArmZ(0.41f, true);
+
                 shoulderScript.SetWidth(2.96f);
-                shoulderScript.setZlevel(-0.4f);
+
                 //shoulderScript.SetPos(xShoulderShift, yShoulderShift);
             }
             myDirectionX = 1;
@@ -171,10 +175,9 @@ public class NPCRotation : MonoBehaviour
 
             if (shoulderScript != null && isEquipped)
             {
-                shoulderScript.SetArmZ(0, false);
-                shoulderScript.SetArmZ(0, true);
+
                 shoulderScript.SetWidth(4.84f);
-                shoulderScript.setZlevel(-0.4f);
+
 
             }
             myDirectionX = 1;
@@ -189,10 +192,9 @@ public class NPCRotation : MonoBehaviour
 
             if (shoulderScript != null && isEquipped)
             {
-                shoulderScript.SetArmZ(0, false);
-                shoulderScript.SetArmZ(0, true);
+
                 shoulderScript.SetWidth(6.37f);
-                shoulderScript.setZlevel(-0.4f);
+
             }
             myDirectionX = 0;
             myDirectionY = -1;
@@ -205,10 +207,9 @@ public class NPCRotation : MonoBehaviour
 
             if (shoulderScript != null && isEquipped)
             {
-                shoulderScript.SetArmZ(0, false);
-                shoulderScript.SetArmZ(0, true);
+
                 shoulderScript.SetWidth(4.84f);
-                shoulderScript.setZlevel(-0.4f);
+
             }
             myDirectionX = -1;
             myDirectionY = -1;
@@ -221,9 +222,9 @@ public class NPCRotation : MonoBehaviour
 
             if (shoulderScript != null && isEquipped)
             {
-                shoulderScript.SetArmZ(0.41f, false);
+
                 shoulderScript.SetWidth(2.96f);
-                shoulderScript.setZlevel(-0.4f);
+
             }
             myDirectionX = -1;
             myDirectionY = 0;
@@ -236,10 +237,9 @@ public class NPCRotation : MonoBehaviour
         {
             if (shoulderScript != null && isEquipped)
             {
-                shoulderScript.SetArmZ(0, false);
-                shoulderScript.SetArmZ(0, true);
+
                 shoulderScript.SetWidth(4.84f);
-                shoulderScript.setZlevel(0.01f);
+
             }
             myDirectionX = -1;
             myDirectionY = 1;
@@ -251,10 +251,9 @@ public class NPCRotation : MonoBehaviour
         {
             if (shoulderScript != null && isEquipped)
             {
-                shoulderScript.SetArmZ(0, false);
-                shoulderScript.SetArmZ(0, true);
+
                 shoulderScript.SetWidth(6.37f);
-                shoulderScript.setZlevel(0.01f);
+
             }
             myDirectionX = 1;
             myDirectionY = 0;
@@ -266,10 +265,9 @@ public class NPCRotation : MonoBehaviour
         {
             if (shoulderScript != null && isEquipped)
             {
-                shoulderScript.SetArmZ(0, false);
-                shoulderScript.SetArmZ(0, true);
+
                 shoulderScript.SetWidth(4.84f);
-                shoulderScript.setZlevel(0.01f);
+
             }
             myDirectionX = 1;
             myDirectionY = 1;

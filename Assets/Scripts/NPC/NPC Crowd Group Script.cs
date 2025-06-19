@@ -93,7 +93,7 @@ public class NPCCrowdGroupScript : MonoBehaviour
             if (i != randomTalkNumber)
             {
                 //Debug.Log(npcTransforms[i].name + "'s look position has been set to the speaker.");
-                npcTransforms[i].Find("LookDirection_NPC_temp").position = npcTransforms[randomTalkNumber].position;
+                npcTransforms[i].Find("LookDirection").position = npcTransforms[randomTalkNumber].position;
 
             }
 

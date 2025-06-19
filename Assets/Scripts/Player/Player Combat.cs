@@ -27,7 +27,7 @@ public class PlayerCombat : MonoBehaviour
     {
 
 
-        animator.SetTrigger("Attack");
+        //animator.SetTrigger("Attack");
 
 
     }

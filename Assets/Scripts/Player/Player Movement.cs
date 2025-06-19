@@ -6,6 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 0.77f;
 
+    public bool sideView = false;
+
     public Rigidbody2D rb;
 
     public Animator animator;
@@ -14,23 +16,53 @@ public class PlayerMovement : MonoBehaviour
 
     public float movementY;
 
+    public float calculatedSpeed;
+
     Vector2 movement;
 
     // Update is called once per frame
     void Update()
     {
+        if (sideView == false)
+        {
+            movementX = movement.x;
+            movementY = movement.y;
 
-        movementX = movement.x;
-        movementY = movement.y;
+            movement.x = Input.GetAxisRaw("Horizontal");
+            movement.y = Input.GetAxisRaw("Vertical");
 
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
+            animator.SetFloat("Horizontal", movement.x);
+            animator.SetFloat("Vertical", movement.y);
+
+            calculatedSpeed = movement.sqrMagnitude;
+
+            animator.SetFloat("Speed", calculatedSpeed);
+
+        }
+        else
+        {
+            movementX = movement.x;
+            movementY = 0;
+            movement.x = Input.GetAxisRaw("Horizontal");
+            animator.SetFloat("Horizontal", movement.x);
+            calculatedSpeed = movement.sqrMagnitude;
+            animator.SetFloat("Speed", calculatedSpeed);
+        }
+
+
+    }
+
+    public void StopMoving()    //stopping the movement and resetting the animator variables
+    {
+        movementX = 0;
+
+        movementY = 0;
+
+        calculatedSpeed = 0;
 
         animator.SetFloat("Horizontal", movement.x);
         animator.SetFloat("Vertical", movement.y);
-
-        animator.SetFloat("Speed", movement.sqrMagnitude);
-
+        animator.SetFloat("Speed", calculatedSpeed);
     }
 
     void FixedUpdate()

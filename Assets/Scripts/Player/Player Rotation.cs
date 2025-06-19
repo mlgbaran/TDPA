@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Numerics;
 using Unity.Mathematics;
 using Unity.VisualScripting;
@@ -14,9 +15,11 @@ public class PlayerRotation : MonoBehaviour
 
     [SerializeField] Camera cam;
 
-    [HideInInspector] public float myDirectionX;
+    public bool sideView = false;
 
-    [HideInInspector] public float myDirectionY;
+    public float myDirectionX;
+
+    public float myDirectionY;
 
     public PlayerMovement playerMovement;
 
@@ -28,7 +31,8 @@ public class PlayerRotation : MonoBehaviour
 
     UnityEngine.Vector3 mouseposition;
 
-    public GameObject lookPosition = null;
+    public bool lookAtLookDirection;
+    public GameObject lookDirection;
     Color color;
 
     UnityEngine.Vector3 ustsag;
@@ -60,24 +64,17 @@ public class PlayerRotation : MonoBehaviour
 
     public float yShoulderShift = 0;
 
+    public bool dialogueMode;
+
     float movementX;
 
     float movementY;
 
-    bool movementreduced = false;
-
-    void Awake()
-    {
-
-
-
-    }
     // Start is called before the first frame update
     void Start()
     {
         isTargetFarEnough = false;
 
-        movementreduced = false;
 
     }
 
@@ -91,7 +88,7 @@ public class PlayerRotation : MonoBehaviour
         tanbig = Mathf.Tan((90f - smallDegree) * Mathf.Deg2Rad);
 
 
-        if (lookPosition == null)
+        if (lookAtLookDirection == false)
         {
             //if player's/NPC's direction is going to be determined by the mouse
 
@@ -106,15 +103,15 @@ public class PlayerRotation : MonoBehaviour
 
 
         }
-        else
+        else if (lookAtLookDirection == true)
         {
             //if player's/NPC's direction is going to be determined by the LookDirection GameObject's position
 
-            isTargetFarEnough = CheckTargetDistance(lookPosition.transform.position);
+            isTargetFarEnough = CheckTargetDistance(lookDirection.transform.position);
 
             if (isTargetFarEnough)
             {
-                LookAt(lookPosition.transform.position);
+                LookAt(lookDirection.transform.position);
             }
 
         }
@@ -130,230 +127,268 @@ public class PlayerRotation : MonoBehaviour
     void LookAt(UnityEngine.Vector3 target)
     {
 
-        target.z = 10;
 
-
-
-
-        //Debug.Log(animator.avatar);
-
-
-
-        //topright topleft vs
-
-        ustsag = new UnityEngine.Vector3(transform.position.x + tansmall, transform.position.y + 1, transform.position.z);
-
-        sagust = new UnityEngine.Vector3(transform.position.x + 1, transform.position.y + tansmall, transform.position.z);
-
-        sagalt = new UnityEngine.Vector3(transform.position.x + 1, transform.position.y - tansmall, transform.position.z);
-
-        altsag = new UnityEngine.Vector3(transform.position.x + tansmall, transform.position.y - 1, transform.position.z);
-
-        altsol = new UnityEngine.Vector3(transform.position.x - tansmall, transform.position.y - 1, transform.position.z);
-
-        solalt = new UnityEngine.Vector3(transform.position.x - 1, transform.position.y - tansmall, transform.position.z);
-
-        solust = new UnityEngine.Vector3(transform.position.x - 1, transform.position.y + tansmall, transform.position.z);
-
-        ustsol = new UnityEngine.Vector3(transform.position.x - tansmall, transform.position.y + 1, transform.position.z);
-
-
-
-        dir = (target - transform.position).normalized;
-
-        dir.z = transform.position.z;
-
-
-        float tanDir = dir.y / dir.x;
-
-        //declaring tansmall and tan 60 values
-
-
-        float abstanDir = Math.Abs(tanDir);
-
-
-        //WTF
-
-
-
-
-        //6.37 for up/down
-
-        //4.84 for right/left up/down
-
-        //2.96 for right/left
-
-
-        //0.01: behind the head, -0.2: in front of the head.
-
-
-
-        //where is the player going ?
-        movementX = playerMovement.movementX;
-        movementY = playerMovement.movementY;
-
-
-        //CANCELED-----------------------------------------------------------------------------------------------------------------------------
-
-        //When going towards one direction, if the player looks towards the opposite direction, player's movement speed will be reduced (halved)
-
-        //if aiming (holding right mouse button)
-
-        //CANCELED-----------------------------------------------------------------------------------------------------------------------------
-
-
-        if (dir.x > 0 && abstanDir < tansmall)          //RIGHT
+        if (sideView == false)
         {
-            if (shoulderScript != null && isEquipped)
-            {
-                shoulderScript.SetWidth(2.96f);
-                shoulderScript.setZlevel(-0.4f);
+            target.z = 10;
 
-                //shoulderScript.SetPos(xShoulderShift, yShoulderShift);
+
+
+
+            //Debug.Log(animator.avatar);
+
+
+
+            //topright topleft vs
+
+            ustsag = new UnityEngine.Vector3(transform.position.x + tansmall, transform.position.y + 1, transform.position.z);
+
+            sagust = new UnityEngine.Vector3(transform.position.x + 1, transform.position.y + tansmall, transform.position.z);
+
+            sagalt = new UnityEngine.Vector3(transform.position.x + 1, transform.position.y - tansmall, transform.position.z);
+
+            altsag = new UnityEngine.Vector3(transform.position.x + tansmall, transform.position.y - 1, transform.position.z);
+
+            altsol = new UnityEngine.Vector3(transform.position.x - tansmall, transform.position.y - 1, transform.position.z);
+
+            solalt = new UnityEngine.Vector3(transform.position.x - 1, transform.position.y - tansmall, transform.position.z);
+
+            solust = new UnityEngine.Vector3(transform.position.x - 1, transform.position.y + tansmall, transform.position.z);
+
+            ustsol = new UnityEngine.Vector3(transform.position.x - tansmall, transform.position.y + 1, transform.position.z);
+
+
+
+            dir = (target - transform.position).normalized;
+
+            dir.z = transform.position.z;
+
+
+            float tanDir = dir.y / dir.x;
+
+            //declaring tansmall and tan 60 values
+
+
+            float abstanDir = Math.Abs(tanDir);
+
+
+            //WTF
+
+
+
+
+            //6.37 for up/down
+
+            //4.84 for right/left up/down
+
+            //2.96 for right/left
+
+
+            //0.01: behind the head, -0.2: in front of the head.
+
+
+
+            //where is the player going ?
+            movementX = playerMovement.movementX;
+            movementY = playerMovement.movementY;
+
+
+            //CANCELED-----------------------------------------------------------------------------------------------------------------------------
+
+            //When going towards one direction, if the player looks towards the opposite direction, player's movement speed will be reduced (halved)
+
+            //if aiming (holding right mouse button)
+
+            //CANCELED-----------------------------------------------------------------------------------------------------------------------------
+
+
+            if (dir.x > 0 && abstanDir < tansmall)          //RIGHT
+            {
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(2.96f);
+
+
+                    //shoulderScript.SetPos(xShoulderShift, yShoulderShift);
+
+                }
+                myDirectionX = 1;
+                myDirectionY = 0;
+                animator.SetFloat("DirectionX", 1);
+                animator.SetFloat("DirectionY", 0);
+
+
 
             }
-            myDirectionX = 1;
-            myDirectionY = 0;
-            animator.SetFloat("DirectionX", 1);
-            animator.SetFloat("DirectionY", 0);
-
-
-
-        }
-        else if (dir.x > 0 && dir.y < 0 && abstanDir < tanbig) //RIGHT DOWN
-        {
-
-            if (shoulderScript != null && isEquipped)
+            else if (dir.x > 0 && dir.y < 0 && abstanDir < tanbig) //RIGHT DOWN
             {
-                shoulderScript.SetWidth(4.84f);
-                shoulderScript.setZlevel(-0.4f);
+
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(4.84f);
+
+
+                }
+                myDirectionX = 1;
+                myDirectionY = -1;
+                animator.SetFloat("DirectionX", 1);
+                animator.SetFloat("DirectionY", -1);
 
             }
-            myDirectionX = 1;
-            myDirectionY = -1;
-            animator.SetFloat("DirectionX", 1);
-            animator.SetFloat("DirectionY", -1);
 
-        }
-
-        else if (dir.y < 0 && abstanDir > tanbig) //DOWN
-        {
-
-            if (shoulderScript != null && isEquipped)
+            else if (dir.y < 0 && abstanDir > tanbig) //DOWN
             {
-                shoulderScript.SetWidth(6.37f);
-                shoulderScript.setZlevel(-0.4f);
+
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(6.37f);
+
+                }
+                myDirectionX = 0;
+                myDirectionY = -1;
+                animator.SetFloat("DirectionX", 0);
+                animator.SetFloat("DirectionY", -1);
+
             }
-            myDirectionX = 0;
-            myDirectionY = -1;
-            animator.SetFloat("DirectionX", 0);
-            animator.SetFloat("DirectionY", -1);
-
-        }
-        else if (dir.x < 0 && dir.y < 0 && abstanDir > tansmall) //LEFT DOWN
-        {
-
-            if (shoulderScript != null && isEquipped)
+            else if (dir.x < 0 && dir.y < 0 && abstanDir > tansmall) //LEFT DOWN
             {
-                shoulderScript.SetWidth(4.84f);
-                shoulderScript.setZlevel(-0.4f);
+
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(4.84f);
+
+                }
+                myDirectionX = -1;
+                myDirectionY = -1;
+                animator.SetFloat("DirectionX", -1);
+                animator.SetFloat("DirectionY", -1);
+
             }
-            myDirectionX = -1;
-            myDirectionY = -1;
-            animator.SetFloat("DirectionX", -1);
-            animator.SetFloat("DirectionY", -1);
-
-        }
-        else if (dir.x < 0 && abstanDir < tansmall)          //LEFT
-        {
-
-            if (shoulderScript != null && isEquipped)
+            else if (dir.x < 0 && abstanDir < tansmall)          //LEFT
             {
-                shoulderScript.SetWidth(2.96f);
-                shoulderScript.setZlevel(-0.4f);
+
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(2.96f);
+
+                }
+                myDirectionX = -1;
+                myDirectionY = 0;
+                animator.SetFloat("DirectionX", -1);
+                animator.SetFloat("DirectionY", 0);
+
+
             }
-            myDirectionX = -1;
-            myDirectionY = 0;
-            animator.SetFloat("DirectionX", -1);
-            animator.SetFloat("DirectionY", 0);
-
-
-        }
-        else if (dir.x < 0 && dir.y > 0 && abstanDir < tanbig) //LEFT UP
-        {
-            if (shoulderScript != null && isEquipped)
+            else if (dir.x < 0 && dir.y > 0 && abstanDir < tanbig) //LEFT UP
             {
-                shoulderScript.SetWidth(4.84f);
-                shoulderScript.setZlevel(0.01f);
-            }
-            myDirectionX = -1;
-            myDirectionY = 1;
-            animator.SetFloat("DirectionX", -1);
-            animator.SetFloat("DirectionY", 1);
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(4.84f);
 
-        }
-        else if (dir.y > 0 && abstanDir > tanbig) //UP
-        {
-            if (shoulderScript != null && isEquipped)
+                }
+                myDirectionX = -1;
+                myDirectionY = 1;
+                animator.SetFloat("DirectionX", -1);
+                animator.SetFloat("DirectionY", 1);
+
+            }
+            else if (dir.y > 0 && abstanDir > tanbig) //UP
             {
-                shoulderScript.SetWidth(6.37f);
-                shoulderScript.setZlevel(0.01f);
-            }
-            myDirectionX = 1;
-            myDirectionY = 0;
-            animator.SetFloat("DirectionY", 1);
-            animator.SetFloat("DirectionX", 0);
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(6.37f);
 
-        }
-        else if (dir.x > 0 && dir.y > 0 && abstanDir > tansmall) //Right UP
-        {
-            if (shoulderScript != null && isEquipped)
+                }
+                myDirectionX = 0;
+                myDirectionY = 1;
+                animator.SetFloat("DirectionX", 0);
+                animator.SetFloat("DirectionY", 1);
+
+            }
+            else if (dir.x > 0 && dir.y > 0 && abstanDir > tansmall) //Right UP
             {
-                shoulderScript.SetWidth(4.84f);
-                shoulderScript.setZlevel(0.01f);
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(4.84f);
+
+                }
+                myDirectionX = 1;
+                myDirectionY = 1;
+                animator.SetFloat("DirectionX", 1);
+                animator.SetFloat("DirectionY", 1);
+
+
             }
-            myDirectionX = 1;
-            myDirectionY = 1;
-            animator.SetFloat("DirectionX", 1);
-            animator.SetFloat("DirectionY", 1);
+
+            if (debugmode == true)
+            {
 
 
+                Debug.DrawLine(transform.position, ustsag, Color.green);
+
+                Debug.DrawLine(transform.position, sagust, Color.green);
+
+                Debug.DrawLine(transform.position, sagalt, Color.green);
+
+                Debug.DrawLine(transform.position, altsag, Color.green);
+
+                Debug.DrawLine(transform.position, altsol, Color.green);
+
+                Debug.DrawLine(transform.position, solalt, Color.green);
+
+                Debug.DrawLine(transform.position, solust, Color.green);
+
+                Debug.DrawLine(transform.position, ustsol, Color.green);
+
+                //to mouse pos
+
+                Debug.DrawLine(transform.position, target, Color.red);
+
+            }
+
+            bool isBehindPlayer = (myDirectionX == 0 && myDirectionY == 1) ||  // Up
+                              (myDirectionX == -1 && myDirectionY == 1) || // Left-Up
+                              (myDirectionX == 1 && myDirectionY == 1);   // Right-Up
+
+
+            shoulderScript.UpdateArmSortingOrder(isBehindPlayer);
         }
-
-        if (lookPosition == null && debugmode == true)
+        else    //if side view
         {
+            dir = (target - transform.position).normalized;
+
+            dir.z = transform.position.z;
+
+            if (dir.x < 0)          //LEFT
+            {
+
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(2.96f);
+
+                }
+                myDirectionX = -1;
+                myDirectionY = 0;
+                animator.SetFloat("DirectionX", -1);
+                animator.SetFloat("DirectionY", 0);
 
 
-            Debug.DrawLine(transform.position, ustsag, Color.green);
+            }
+            else if (dir.x > 0)
+            {
+                if (shoulderScript != null && isEquipped)
+                {
+                    shoulderScript.SetWidth(2.96f);
 
-            Debug.DrawLine(transform.position, sagust, Color.green);
+                }
+                myDirectionX = 1;
+                myDirectionY = 0;
+                animator.SetFloat("DirectionX", 1);
+                animator.SetFloat("DirectionY", 0);
+            }
 
-            Debug.DrawLine(transform.position, sagalt, Color.green);
-
-            Debug.DrawLine(transform.position, altsag, Color.green);
-
-            Debug.DrawLine(transform.position, altsol, Color.green);
-
-            Debug.DrawLine(transform.position, solalt, Color.green);
-
-            Debug.DrawLine(transform.position, solust, Color.green);
-
-            Debug.DrawLine(transform.position, ustsol, Color.green);
-
-            //to mouse pos
-
-            Debug.DrawLine(transform.position, target, Color.red);
-
+            shoulderScript.UpdateArmSortingOrder(false);
         }
-
-    }
-
-    void LookAtLookPosition()
-    {
-
-
-
-
 
 
 
@@ -378,12 +413,12 @@ public class PlayerRotation : MonoBehaviour
         if (Math.Abs(target.x - transform.position.x) > animateThreshold || Math.Abs(target.y - transform.position.y) > animateThreshold)
         {
 
-            animator.SetBool("IsLooking", true);
+            //animator.SetBool("IsLooking", true);
             result = true;
         }
         else
         {
-            animator.SetBool("IsLooking", false);
+            //animator.SetBool("IsLooking", false);
             result = false;
         }
 

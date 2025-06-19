@@ -7,10 +7,32 @@ public class RenderSortingScript : MonoBehaviour
     private IsoObjectSorterScript[] sorters;
     private SpriteRenderer playerRenderer;
 
-    public float radius = 0.4f; // Radius to detect nearby assets
-
+    public Vector2 detectionSize = new Vector2(1.0f, 1.5f); // Width and Height of the rectangle
+    public Vector2 detectionOffset = new Vector2(0f, -0.1f); // X and Y offset for the rectangle
     public bool debugMode = false;
 
+    public LayerMask detectionLayer; // LayerMask for objects to check (e.g., assets and NPCs)
+
+
+    bool IsWithinRectangle(Vector2 playerPos, Vector2 assetPos)
+    {
+        // Calculate the detection rectangle's center based on the player position and offset
+        Vector2 rectCenter = playerPos + detectionOffset;
+
+        // Calculate the player's rectangular bounds
+        Vector2 rectMin = rectCenter - detectionSize / 2;
+        Vector2 rectMax = rectCenter + detectionSize / 2;
+
+        // Check if the asset's position is within the rectangle
+        return assetPos.x >= rectMin.x && assetPos.x <= rectMax.x &&
+               assetPos.y >= rectMin.y && assetPos.y <= rectMax.y;
+    }
+
+    bool IsOverlapping(Renderer objectRenderer)
+    {
+        // Check if the player's bounds intersect with the object's bounds
+        return playerRenderer.bounds.Intersects(objectRenderer.bounds);
+    }
 
     void Start()
     {
@@ -29,15 +51,23 @@ public class RenderSortingScript : MonoBehaviour
     void UpdateSortingOrder()
     {
         int baseOrder = 1; // Default sorting order for the player
+        bool isSorted = false; // Tracks whether the player's sorting order is updated
+
+        // The player's position is their feet (unadjusted)
+        Vector2 playerPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
 
         foreach (var sorter in sorters)
         {
-            // Skip assets outside the player's radius
-            if (Vector2.Distance(transform.position, sorter.GetObjectPosition()) > radius)
+            Vector2 assetPos = sorter.GetObjectPosition();
+
+            // Skip assets outside the player's detection rectangle
+            if (!IsWithinRectangle(playerPos, assetPos))
                 continue;
 
-            Vector2 assetPos = sorter.GetObjectPosition();
-            Vector2 playerPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
+            // Check if the player overlaps with the asset's bounding box
+            Renderer assetRenderer = sorter.GetComponent<Renderer>();
+            if (assetRenderer == null || !IsOverlapping(assetRenderer))
+                continue;
 
             // Calculate world space points for diagonal line
             Vector2 pointA = assetPos + sorter.pointA; // Bottom-left corner
@@ -47,15 +77,26 @@ public class RenderSortingScript : MonoBehaviour
             float crossProduct = (pointB.x - pointA.x) * (playerPos.y - pointA.y) -
                                  (pointB.y - pointA.y) * (playerPos.x - pointA.x);
 
-            // Adjust sorting order
-            if (crossProduct < 0) // Player is below the line
+            // Adjust sorting order based on relative position
+            if (crossProduct < 0) // Player's feet are below the line
             {
                 playerRenderer.sortingOrder = baseOrder + 1; // Render in front
+                isSorted = true;
             }
-            else // Player is above the line
+            else // Player's feet are above the line
             {
                 playerRenderer.sortingOrder = baseOrder - 1; // Render behind
+                isSorted = true;
             }
+
+            // Debug: Log overlapping assets
+            Debug.Log($"Overlapping with: {sorter.gameObject.name}");
+        }
+
+        // Fallback to default sorting if no objects affect the player
+        if (!isSorted)
+        {
+            playerRenderer.sortingOrder = baseOrder;
         }
     }
 
@@ -67,21 +108,21 @@ public class RenderSortingScript : MonoBehaviour
     {
         if (!debugMode) return;
 
+        // Draw the detection rectangle
+        Vector2 playerPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
+        Vector2 rectCenter = playerPos + detectionOffset;
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, radius);
+        Gizmos.DrawWireCube(rectCenter, detectionSize);
 
         if (sorters == null || sorters.Length == 0) return;
-
-        Vector2 playerPos = new Vector2(transform.position.x, transform.position.y - 0.1f);
-
-        Gizmos.DrawSphere(playerPos, 0.005f);
 
         foreach (var sorter in sorters)
         {
             Vector2 assetPos = sorter.GetObjectPosition();
 
-            // Skip assets outside the radius
-            if (Vector2.Distance(playerPos, assetPos) > radius)
+            // Skip assets outside the rectangle
+            if (!IsWithinRectangle(playerPos, assetPos))
                 continue;
 
             // Draw diagonal line of the asset

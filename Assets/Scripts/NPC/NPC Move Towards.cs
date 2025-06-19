@@ -22,7 +22,7 @@ public class NPCMoveTowards : MonoBehaviour
 
     public float directiony;
 
-    Vector2 movement;
+    private Vector2 movement;
 
     // Update is called once per frame
     void Update()
@@ -78,8 +78,12 @@ public class NPCMoveTowards : MonoBehaviour
         }
         else
         {
+            if (rb != null)
+            {
+                rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+            }
 
-            rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+
 
         }
 

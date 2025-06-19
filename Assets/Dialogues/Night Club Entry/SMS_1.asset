@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa028bf0951a844ba26461c41374c2b, type: 3}
+  m_Name: SMS_1
+  m_EditorClassIdentifier: 
+  participants:
+  - {fileID: 11400000, guid: ee8d90f8a819bfe41ac657dd717a2557, type: 2}
+  - {fileID: 11400000, guid: ffeabc29f536c92438627d14093692cc, type: 2}
+  isSMS: 1
+  lines:
+  - speakerIndex: 0
+    targetIndex: 1
+    text: Are you sure I'm at the right place ?
+    actions: []
+    unskippable: 0
+  - speakerIndex: 1
+    targetIndex: 0
+    text: Yes! Just keep going you'll see the entrance.
+    actions: []
+    unskippable: 0
+  - speakerIndex: 0
+    targetIndex: 1
+    text: Uh..    Okay let's see
+    actions: []
+    unskippable: 0

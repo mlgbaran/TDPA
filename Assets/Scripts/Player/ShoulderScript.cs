@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using Unity.VisualScripting;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
 
@@ -34,6 +33,30 @@ public class ShoulderScript : MonoBehaviour
 
     public float yOffset;
 
+    public SpriteRenderer characterRenderer;
+
+
+
+
+    public void UpdateArmSortingOrder(bool isBehindPlayer)
+    {
+        // Iterate through all arm pixel renderers
+        foreach (Transform arm in transform) // Iterate over left arm and right arm
+        {
+            foreach (var pixel in arm.GetComponentsInChildren<SpriteRenderer>()) // Get "One Pixel" renderers
+            {
+                if (isBehindPlayer)
+                {
+                    pixel.sortingOrder = characterRenderer.sortingOrder - 1; // Render behind the player
+                }
+                else
+                {
+                    pixel.sortingOrder = characterRenderer.sortingOrder + 1; // Render in front of the player
+                }
+            }
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,24 +85,6 @@ public class ShoulderScript : MonoBehaviour
 
     }
 
-    public void SetArmZ(float zlevel, bool isLeft)
-    {
-
-        if (isLeft)
-        {
-
-            leftarm.position = new Vector3(leftarm.position.x, leftarm.position.y, zlevel);
-
-        }
-        else
-        {
-
-            rightarm.position = new Vector3(rightarm.position.x, rightarm.position.y, zlevel);
-
-        }
-
-
-    }
 
     public void SetWidth(float value)
     {
@@ -113,19 +118,6 @@ public class ShoulderScript : MonoBehaviour
 
     }
 
-    public void setZlevel(float newzlevel)
-    {
-        playerZ = transform.parent.position.z;
 
-        zlevel = newzlevel;
-        //Debug.Log(zlevel);
-        transform.position = new Vector3(transform.position.x, transform.position.y, playerZ + zlevel);
-
-        shootingArmsReturnPoint.position = new Vector3(shootingArmsReturnPoint.position.x, shootingArmsReturnPoint.position.y, playerZ + zlevel);
-
-
-
-
-    }
 
 }
