@@ -73,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("isEquippedPistol", false);
 
-        shooting.enabled = true;
+        shooting.enabled = false;
 
         weapon.SetActive(false);
 

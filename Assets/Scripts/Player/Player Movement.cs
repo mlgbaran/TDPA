@@ -34,6 +34,17 @@ public class PlayerMovement : MonoBehaviour
             animator.SetFloat("Horizontal", movement.x);
             animator.SetFloat("Vertical", movement.y);
 
+            int horizontalInt = 0;
+            int verticalInt = 0;
+            if (movement.x < -0.1f) horizontalInt = -1;
+            else if (movement.x > 0.1f) horizontalInt = 1;
+
+            if (movement.y < -0.1f) verticalInt = -1;
+            else if (movement.y > 0.1f) verticalInt = 1;
+
+            animator.SetInteger("HorizontalInt", horizontalInt);
+            animator.SetInteger("VerticalInt", verticalInt);
+
             calculatedSpeed = movement.sqrMagnitude;
 
             animator.SetFloat("Speed", calculatedSpeed);
